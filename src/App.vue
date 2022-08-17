@@ -1,9 +1,9 @@
 <template>
-  <main class="columns is-gapless is-multiline" :class="{ 'modo-escuro': modoEscuroAtivo }">
+  <main class="columns is-gapless is-multiline" :class="{ 'modo-escuro' : modoEscuro}">
     <div class="column is-one-quarter">
-      <BarraLateral @aoTemaAlterado="trocarTema" />
+      <BarraLateral @aoAlterarModo="alterarModo"/>
     </div>
-    <div class="column is-three-quarter conteudo">
+    <div class="column is-three-quarters conteudo">
       <Notificacoes />
       <router-view></router-view>
     </div>
@@ -11,46 +11,41 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import BarraLateral from './components/BarraLateral.vue'
-import Notificacoes from './components/Notificacoes.vue';
+import { defineComponent } from "vue";
+import BarraLateral from "./components/BarraLateral.vue";
+import Notificacoes from "./components/Notificacoes.vue"
+
 export default defineComponent({
-  name: 'App',
+  name: "App",
   components: {
     BarraLateral,
     Notificacoes
   },
-  data() {
+  data () {
     return {
-      modoEscuroAtivo: false
+      modoEscuro: false
     }
   },
   methods: {
-    trocarTema(modoEscuroAtivo: boolean) {
-      this.modoEscuroAtivo = modoEscuroAtivo
+    alterarModo (modoEscuro: boolean) : void {
+      this.modoEscuro = modoEscuro
     }
   }
 });
 </script>
 
 <style>
-.lista {
-  padding: 1.25rem;
-}
-
 main {
   --bg-primario: #fff;
   --texto-primario: #000;
-  transition: all 0.5s;
 }
-
 main.modo-escuro {
   --bg-primario: #2b2d42;
   --texto-primario: #ddd;
-  transition: all 0.5s;
-
 }
-
+.lista {
+  padding: 1.25rem;
+}
 .conteudo {
   background-color: var(--bg-primario);
 }

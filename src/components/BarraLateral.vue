@@ -1,11 +1,11 @@
 <template>
   <header>
     <h1>
-      <img src="../assets/logo.png" alt="">
+      <img alt="Alura Tracker" src="../assets/logo.png">
     </h1>
-    <button class="button" @click="alterarTema">
-      {{ textoBotao }}
-    </button>
+    <div class="has-text-centered">
+      <button class="button" @click="alterarModo">Ativar modo {{ textoBtn }}</button>
+    </div>
     <nav class="panel mt-5">
       <ul>
         <li>
@@ -26,68 +26,56 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'BarraLateral',
-  emits: ['aoTemaAlterado'],
-  data() {
+  name: "BarraLateral",
+  emits: ['aoAlterarModo'],
+  data () {
     return {
-      modoEscuroAtivo: false,
-    }
-  },
-  computed: {
-    textoBotao() {
-      if (this.modoEscuroAtivo) {
-        return 'Desativar modo escuro'
-      } else {
-        return 'Ativar modo escuro'
-      }
+      modoEscuro: false
     }
   },
   methods: {
-    alterarTema() {
-      this.modoEscuroAtivo = !this.modoEscuroAtivo;
-      this.$emit('aoTemaAlterado', this.modoEscuroAtivo);
+    alterarModo () : void {
+      this.modoEscuro = !this.modoEscuro
+      this.$emit('aoAlterarModo', this.modoEscuro)
+    }
+  },
+  computed: {
+    textoBtn () : string {
+      return this.modoEscuro ? 'claro' : 'escuro'
     }
   }
-})
+});
 </script>
-
 <style scoped>
 h1 {
   text-align: center;
 }
-
 strong {
   color: #f95738;
 }
-
 header {
   background: #0d3b66;
   width: 100%;
   height: 100vh;
   padding: 2rem;
 }
-
 @media only screen and (max-width: 768px) {
   header {
     height: auto;
   }
 }
-
 .panel li {
   margin: 8px 0;
 }
-
 .link {
   color: #fff;
 }
-
 .link:hover {
   color: #FAF0CA;
 }
-
 .link.router-link-active {
   color: #FAF0CA;
 }
