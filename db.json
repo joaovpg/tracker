@@ -7,10 +7,26 @@
     {
       "nome": "Bytebank",
       "id": 2
+    }
+  ],
+  "tarefas": [
+    {
+      "id": 1,
+      "duracaoEmSegundos": 120,
+      "descricao": "Configuração do ambiente",
+      "projeto": {
+        "id": 1,
+        "nome": "Mutations and Actions"
+      }
     },
     {
-      "nome": "React",
-      "id": 8
+      "duracaoEmSegundos": 5,
+      "descricao": "Tentando API",
+      "projeto": {
+        "id": 1,
+        "nome": "Mutations and Actions"
+      },
+      "id": 2
     }
   ]
 }
