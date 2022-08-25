@@ -14,11 +14,12 @@
 
 <script lang="ts">
 import { useStore } from "@/store";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { TipoNotificacao } from "@/interfaces/INotificacao";
 
 import useNotificador from '@/hooks/notificador'
 import { CADASTRAR_PROJETOS, ALTERAR_PROJETO } from "@/store/tipo-acoes";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "FormularioView",
@@ -27,46 +28,57 @@ export default defineComponent({
       type: String
     }
   },
-  mounted() {
-    if (this.id) {
-      const projeto = this.store.state.projetos.find(proj => proj.id == this.id)
-      this.nomeDoProjeto = projeto?.nome || ''
-    }
-  },
-  data() {
-    return {
-      nomeDoProjeto: ""
-    };
-  },
-  methods: {
-    salvar() {
-      if (this.id) {
-        this.store.dispatch(ALTERAR_PROJETO, {
-          id: this.id,
-          nome: this.nomeDoProjeto
-        }).then(() => this.lidarComSucesso())
-          .catch((erro) => this.lidarComFalha(erro))
-      } else {
-        this.store.dispatch(CADASTRAR_PROJETOS, this.nomeDoProjeto)
-          .then(() => this.lidarComSucesso())
-          .catch((erro) => this.lidarComFalha(erro))
-      }
-    },
-    lidarComSucesso() {
-      this.nomeDoProjeto = "";
-      this.notificar(TipoNotificacao.SUCESSO, 'Excelente!', 'O projeto foi cadastrado com sucesso!')
-      this.$router.push('/projetos')
-    },
-    lidarComFalha(erro: any) {
-      this.notificar(TipoNotificacao.FALHA, 'Oh não!', 'Erro ao salvar projeto: ' + erro)
-    }
-  },
-  setup() {
+  setup(props) {
+    const router = useRouter()
     const store = useStore()
     const { notificar } = useNotificador()
+    const nomeDoProjeto = ref("")
+
+    if (props.id) {
+      const projeto = store.state.projeto.projetos.find(
+        (proj) => proj.id == props.id
+      );
+    nomeDoProjeto.value = projeto?.nome || "";
+    }
+
+    const lidarComSucesso = () => {
+      nomeDoProjeto.value = "";
+      notificar(
+        TipoNotificacao.SUCESSO, 
+        'Excelente!', 
+        'O projeto foi cadastrado com sucesso!'
+        )
+      router.push('/projetos')
+    }
+    
+    const lidarComFalha = (erro: any) => {
+      notificar(
+        TipoNotificacao.FALHA, 
+        'Oh não!', 
+        'Erro ao salvar projeto: ' + erro
+        )
+    }
+
+    const salvar = () => {
+      if (props.id) {
+        store.dispatch(ALTERAR_PROJETO, {
+          id: props.id,
+          nome: nomeDoProjeto.value
+        })
+        .then(() => lidarComSucesso())
+          .catch((erro) => lidarComFalha(erro))
+      } else {
+        store.dispatch(CADASTRAR_PROJETOS, nomeDoProjeto.value)
+          .then(() => lidarComSucesso())
+          .catch((erro) => lidarComFalha(erro))
+      }
+    }
+
     return {
       store,
-      notificar
+      notificar,
+      nomeDoProjeto,
+      salvar
     }
   }
 });
