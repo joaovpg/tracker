@@ -9,8 +9,9 @@
       "nome": "Vue"
     },
     {
-      "id": 3,
-      "nome": "API Composition 2.0"
+      "duracaoEmSegundos": 5,
+      "descricao": "Rodape",
+      "id": 3
     }
   ],
   "tarefas": [
@@ -34,7 +35,7 @@
     },
     {
       "duracaoEmSegundos": 5,
-      "descricao": "Testando",
+      "descricao": "Tarefa",
       "id": 3
     }
   ]
